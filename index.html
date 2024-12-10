@@ -4,55 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://noname.oki-toki.net/js/get-call/style.css">
-<script type="text/javascript" src="https://noname.oki-toki.net/js/get-call/widget.iife.js"></script>
 
     <link rel="stylesheet" href="https://comp3441.oki-toki.net/js/web-chat/style.css">
 <script type="text/javascript" src="https://comp3441.oki-toki.net/js/web-chat/web-chat.iife.js"></script>
 </head>
-<div id="get-call"></div>
-<script>
-okiToki.mountGetCall({"token":"3441_79af2afe5a5569f6498ff5d5395b8c63","domain":"https://comp3441.oki-toki.net","target":"#get-call","position":"bottom-left","offset":48,"channels":[{"sourceId":"3","url":"https://t.me/shop_lenovo_ua"},{"sourceId":"4","url":"viber://chat?number=+380503429247"},{"sourceId":"5","url":"online-shop@lenovo.ua"}],"toggleText":"Перетелефонуйте мені","toggleAnimation":true,"toggleColor":"255, 0, 0","toggleTextColor":"255, 255, 255"})
-</script>
-
-<div id="oki-toki-web-call" style="position: fixed; bottom: 50px; right: 50px;"></div>
-<script src="https://comp3441.oki-toki.net/js/webcall/oki-toki.iife.js"></script>
-<script>
-    okiToki.createWebCall({
-        target: '#oki-toki-web-call',
-        domain: 'comp3441.oki-toki.net',
-        messages: {
-            "call": "Зателефонуйте нам",
-            "calling": "З’єднання",
-            "end": "Розмова завершена",
-            "unsupprted": "Ваш браузер не підтримує веб-сокети HTML5."
-        },
-        colors: {
-            "call": "#ff0000",
-            "call-hover": "#ff0000",
-            "call-text": "#ffffff",
-            "calling": "#ff0000",
-            "calling-hover": "#ff0000",
-            "calling-text": "#ffffff",
-            "talking": "#ff0000",
-            "talking-hover": "#ff0000",
-            "talking-text": "#ffffff",
-            "end": "#ff0000",
-            "end-hover": "#ff0000",
-            "end-text": "#ffffff"
-        },
-        buttonType: "static",
-        server: "wss://lvp1-de.oki-toki.net:4014",
-        login: "webcall_1u0zLNwU",
-        dnis: "ddb0e97938d542374fc4d68cf44d9bbb"
-    });
-</script>
-
+<body>
     <div id="web-chat"></div>
 <script>
 okiToki.mountWebChat({"compId":3441,"token":"06000de9a9640e58a15458d4affe9cd4","target":"#web-chat"})
 </script>
-
-    
 </body>
 </html>
