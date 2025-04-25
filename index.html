@@ -1748,6 +1748,24 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 </script>
 
+<script type="text/javascript" src="https://comp3441.oki-toki.net/js/contact/widget.iife.js"></script>
+<script>
+  const isMobile = window.innerWidth < 768;
+
+  window.widgetContact.mount({
+    "token": "3441_e22b0392578c2b3403d196e4613afc0f",
+    "host": "comp3441.oki-toki.net",
+    style: {
+        "color-primary": "255, 0, 0",
+        "color-primary-text": "255, 255, 255",
+        "offset-horizontal": isMobile ? "14px" : "90px",
+        "offset-vertical": isMobile ? "90px" : "10px",
+        "toggle-size": isMobile ? "60px" : "60px" // Розмір іконки
+    },
+    position: "bottom-left"
+  });
+</script>
+	
 <script defer src="https://pop-ups.sendpulse.com/assets/loader.js" data-chats-widget-id="db705eac-3cb5-4174-8a3a-4693f7630e21"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"935e09eadd2596fd","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.4.0-1-g37f21b1","token":"79fd6510efea487a8ae77c59b8a24abb"}' crossorigin="anonymous"></script>
 </body>
