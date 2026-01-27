@@ -43,57 +43,11 @@
 <link rel="shortcut icon" href="https://s3.eu-central-1.amazonaws.com/lenovo-ua-assets/shop/favicon/favicon.ico">
   <link rel="stylesheet" href="https://shop.lenovo.ua/themes/lenovo_final/assets/css/common.css?v=1769527037" />
   <link rel="stylesheet" href="https://shop.lenovo.ua/themes/lenovo_final/assets/css/main-page.css?v=1769527037" />
-<link rel="stylesheet" href="https://shop.lenovo.ua/themes/lenovo_final/assets/app/mainPage.css?v=1769527037" />  
-
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TKK6WDH');</script>
-  <script>
-document.addEventListener('DOMContentLoaded', function(){
-    let timerId = setInterval(function(){
-        //var clientId = ga.getAll()[0].get('clientId');
-        //console.log(clientId);
-    }, 3000);
-});
-</script>
+<link rel="stylesheet" href="https://shop.lenovo.ua/themes/lenovo_final/assets/app/mainPage.css?v=1769527037" /> 
 
   
   
-  <script>
-  var clientId = '';
-  document.addEventListener('DOMContentLoaded', function () {
-    setLecidCookie();
-  });
-
-  function setLecidCookie() {
-    try {
-      clientId = ga.getAll()[0].get('clientId');
-      if (clientId) {
-        document.cookie = "lecid=" + clientId;
-        // console.info(clientId);
-      }
-    } catch (e) {
-      // console.log("Error fetching clientId macro");
-      setTimeout(function () {
-        setLecidCookie();
-      }, 3000);
-    }
-  }
-</script>
-  <script>
-    !function (t, e, c, n) {
-        var s = e.createElement(c);
-        s.async = 1, s.src = 'https://statics.esputnik.com/scripts/' + n + '.js';
-        var r = e.scripts[0];
-        r.parentNode.insertBefore(s, r);
-        var f = function () {
-            f.c(arguments);
-        };
-        f.q = [];
-        f.c = function () {
-            f.q.push(arguments);
-        };
-        t['eS'] = t['eS'] || f;
-    }(window, document, 'script', '66696BC1CE404192A630B1319B7BC096');
-</script><script>eS('init');</script>
+  
 </head>
 <body class="main-page with-top-bar">
 
@@ -952,19 +906,6 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="toTop" class="link-to-top"><i class="fa fa-angle-up"></i></div>
 <div data-react-dom="general"></div>
 
-<!-- Libs -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://shop.lenovo.ua/themes/lenovo_final/assets/js/vendor/jquery/dist/jquery.min.js?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/themes/lenovo_final/assets/js/vendor/swiper/package/js/swiper.min.js?v=1769527037"></script>
-
-<!-- React -->
-<script src="https://shop.lenovo.ua/themes/lenovo_final/assets/app/vendors.js?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/themes/lenovo_final/assets/app/mainPage.js?v=1769527037"></script>
-<!-- Components -->
-<script src="https://shop.lenovo.ua/themes/lenovo_final/assets/js/components/header/header.js?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/themes/lenovo_final/assets-ext/js/search.js?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/themes/lenovo_final/assets/js/components/footer/footer.js?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/themes/lenovo_final/assets/js/components/link-to-top/link-to-top.js?v=1769527037"></script>
-
 <!-- Scripts -->
 <script type="text/javascript" src="https://comp25.oki-toki.net/js/contact/widget.iife.js"></script>
 <script>
@@ -984,66 +925,5 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 </script>
 
-
-    
-<script>
-  $(document).ready(function() {
-      var winWidth = window.innerWidth || document.body.clientWidth,
-      deviceType,
-      bannerAction = 'show',
-      bannerSlide = $('.banner-slide');
-      const bannerId = bannerSlide.first().data('banner-id');
-
-      if (winWidth > 768) {
-          deviceType = 'desktop';
-      } else if(winWidth <= 768 && winWidth >= 576 ) {
-          deviceType = 'tablet';
-      } else {
-          deviceType = 'mobile';
-      }
-
-      $.request('onSendBannerStatistic', {data: {id: bannerId, type: deviceType, action: bannerAction}});
-
-      bannerSlide.click(function (event) {
-          event.preventDefault();
-
-          const bannerId = $(this).data('banner-id');
-          const bannerTitle = $(this).find('img').attr('title');
-          const link = $(this).find('a');
-          const path = link.attr('href');
-          const isOpenLinkInNewTab = link.attr('target') === "_blank";
-
-          if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
-              openBannerLink(path, isOpenLinkInNewTab);
-              return;
-          }
-
-          $.request('onSendBannerStatistic', {data: {id: bannerId, type: deviceType, action: 'click'}});
-          onPromoClick({id: bannerId, title: bannerTitle, path, slot: 1, isOpenLinkInNewTab});
-          openBannerLink(path, isOpenLinkInNewTab)
-      });
-
-      function openBannerLink(path, isOpenLinkInNewTab) {
-          isOpenLinkInNewTab ? window.open(path) : document.location = path;
-      }
-  });
-</script>
-<script src="https://shop.lenovo.ua/plugins/samorai/analytics/assets/js/sourcebuster.min.js?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/plugins/samorai/analytics/assets/js/ecommerce.js?v=1769527037?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/plugins/samorai/analytics/assets/js/esputnik.js?v=1769527037"></script>
-<script src="https://shop.lenovo.ua/modules/system/assets/js/framework.combined-min.js?v=1.2.5"></script>
-<link rel="stylesheet" property="stylesheet" href="https://shop.lenovo.ua/modules/system/assets/css/framework.extras-min.css?v=1.2.5">
-
-<script defer src="https://pop-ups.sendpulse.com/assets/loader.js" data-chats-widget-id="db705eac-3cb5-4174-8a3a-4693f7630e21"></script>
-
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Lenovo.ua",
-    "url": "https://shop.lenovo.ua/"
-  }
-</script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"79fd6510efea487a8ae77c59b8a24abb","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
