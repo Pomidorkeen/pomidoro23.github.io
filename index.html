@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MARTA BONDA | Shop Lenovo AI</title>
     
-    <script src="https://unpkg.com/retell-client-js-sdk/dist/bundle.js"></script>
+    <script src="https://unpkg.com/retell-client-js-sdk@latest/dist/bundle.js"></script>
     
     <style>
         body { 
@@ -24,9 +24,10 @@
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 400px;
         }
         .call-btn {
-            background-color: #E22718; /* Фірмовий червоний Lenovo */
+            background-color: #E22718; 
             color: white;
             border: none;
             padding: 18px 35px;
@@ -37,6 +38,7 @@
             box-shadow: 0 5px 15px rgba(226, 39, 24, 0.3);
             transition: all 0.3s ease;
             margin-top: 20px;
+            width: 100%;
         }
         .call-btn:hover {
             background-color: #000;
@@ -82,45 +84,73 @@
 </script>
 
 <script>
-    const sdk = new window.RetellClientJsSdk.RetellWebClient();
-    const btn = document.getElementById('call-button');
-    const statusText = document.getElementById('status');
+    let sdk;
+    
+    // Чекаємо повного завантаження сторінки
+    window.onload = () => {
+        const btn = document.getElementById('call-button');
+        const statusText = document.getElementById('status');
 
-    btn.addEventListener('click', async () => {
-        // УВАГА: Для тесту вставте сюди свій access_token з кабінету Retell
-        // У Make.com / n8n ми пізніше зробимо автоматичне отримання цього токена
-        const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzU0N2NmMzQwYjJiYjJiYWU5MjQzZDg3YWNmMyJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODgyNDIsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.4S_JEL91Fu0pjFCt_tXX_Fv2tYtxx3MMljvREy3-H7k"; 
-
-        if (btn.innerText === "Завершити розмову") {
-            sdk.stopCall();
-            return;
-        }
-
+        // Ініціалізація SDK з перевіркою глобального об'єкта
         try {
-            statusText.innerText = "З'єднуємо з Олександрою...";
-            btn.disabled = true;
-
-            await sdk.startCall({
-                accessToken: TEST_ACCESS_TOKEN,
-            });
-
-            btn.disabled = false;
-            btn.innerText = "Завершити розмову";
-            btn.style.backgroundColor = "#000";
-            statusText.innerText = "Розмова триває...";
-
-        } catch (error) {
-            console.error("Помилка дзвінка:", error);
-            statusText.innerText = "Помилка. Перевірте доступ до мікрофона або токен.";
-            btn.disabled = false;
+            if (window.Retell) {
+                sdk = new window.Retell.RetellWebClient();
+            } else if (window.RetellClientJsSdk) {
+                sdk = new window.RetellClientJsSdk.RetellWebClient();
+            } else {
+                throw new Error("SDK not found");
+            }
+            console.log("Retell SDK ініціалізовано успішно");
+        } catch (e) {
+            console.error("Помилка ініціалізації SDK:", e);
+            statusText.innerText = "Помилка завантаження голосу";
         }
-    });
 
-    sdk.on('call_ended', () => {
-        statusText.innerText = "Дзвінок завершено. Дякуємо!";
-        btn.innerText = "Зателефонувати знову";
-        btn.style.backgroundColor = "#E22718";
-    });
+        btn.addEventListener('click', async () => {
+            // ВАШ АКТУАЛЬНИЙ ТОКЕН (з вашого скріншоту)
+            const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzU0N2NmMzQwYjJiYjJiYWU5MjQzZDg3YWNmMyJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODgyNDIsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.4S_JEL91Fu0pjFCt_tXX_Fv2tYtxx3MMljvREy3-H7k"; 
+
+            if (btn.innerText === "Завершити розмову") {
+                sdk.stopCall();
+                return;
+            }
+
+            try {
+                statusText.innerText = "З'єднуємо з Олександрою...";
+                btn.disabled = true;
+
+                await sdk.startCall({
+                    accessToken: TEST_ACCESS_TOKEN,
+                });
+
+                btn.disabled = false;
+                btn.innerText = "Завершити розмову";
+                btn.style.backgroundColor = "#000";
+                statusText.innerText = "Розмова триває...";
+
+            } catch (error) {
+                console.error("Помилка дзвінка:", error);
+                statusText.innerText = "Помилка: перевірте токен або мікрофон";
+                btn.disabled = false;
+                btn.innerText = "Зателефонувати Олександрі";
+            }
+        });
+
+        if (sdk) {
+            sdk.on('call_ended', () => {
+                statusText.innerText = "Дзвінок завершено. Дякуємо!";
+                btn.innerText = "Зателефонувати знову";
+                btn.style.backgroundColor = "#E22718";
+                btn.disabled = false;
+            });
+            
+            sdk.on('error', (err) => {
+                console.error("SDK Error:", err);
+                statusText.innerText = "Помилка зв'язку.";
+                btn.disabled = false;
+            });
+        }
+    };
 </script>
 
 </body>
