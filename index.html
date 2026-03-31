@@ -69,7 +69,7 @@
     <p>Менеджер Олександра готова допомогти вам із замовленням</p>
     
     <button id="call-button" class="call-btn">Зателефонувати Олександрі</button>
-    <div id="status">Статус: Готово до тесту</div>
+    <div id="status">Статус: Завантаження...</div>
 </div>
 
 <script type="text/javascript">
@@ -85,72 +85,80 @@
 
 <script>
     let sdk;
-    
-    // Чекаємо повного завантаження сторінки
-    window.onload = () => {
-        const btn = document.getElementById('call-button');
-        const statusText = document.getElementById('status');
+    const btn = document.getElementById('call-button');
+    const statusText = document.getElementById('status');
 
-        // Ініціалізація SDK з перевіркою глобального об'єкта
+    function initRetell() {
         try {
-            if (window.Retell) {
-                sdk = new window.Retell.RetellWebClient();
-            } else if (window.RetellClientJsSdk) {
-                sdk = new window.RetellClientJsSdk.RetellWebClient();
-            } else {
-                throw new Error("SDK not found");
-            }
-            console.log("Retell SDK ініціалізовано успішно");
-        } catch (e) {
-            console.error("Помилка ініціалізації SDK:", e);
-            statusText.innerText = "Помилка завантаження голосу";
-        }
-
-        btn.addEventListener('click', async () => {
-            // ВАШ АКТУАЛЬНИЙ ТОКЕН (з вашого скріншоту)
-            const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzA2NmYxNjQ4NjViZTU5NDA5YzBkMTZhYjdmMyJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODkwMTYsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.zJW5Y7guhSwQT8AahlAz1oYp5y1EFa2_3feNYDpMaxs"; 
-
-            if (btn.innerText === "Завершити розмову") {
-                sdk.stopCall();
-                return;
-            }
-
-            try {
-                statusText.innerText = "З'єднуємо з Олександрою...";
-                btn.disabled = true;
-
-                await sdk.startCall({
-                    accessToken: TEST_ACCESS_TOKEN,
-                });
-
-                btn.disabled = false;
-                btn.innerText = "Завершити розмову";
-                btn.style.backgroundColor = "#000";
-                statusText.innerText = "Розмова триває...";
-
-            } catch (error) {
-                console.error("Помилка дзвінка:", error);
-                statusText.innerText = "Помилка: перевірте токен або мікрофон";
-                btn.disabled = false;
-                btn.innerText = "Зателефонувати Олександрі";
-            }
-        });
-
-        if (sdk) {
-            sdk.on('call_ended', () => {
-                statusText.innerText = "Дзвінок завершено. Дякуємо!";
-                btn.innerText = "Зателефонувати знову";
-                btn.style.backgroundColor = "#E22718";
-                btn.disabled = false;
-            });
+            // Пряме звернення до бібліотеки через глобальний об'єкт
+            const RetellClient = window.RetellWebClient || (window.Retell && window.Retell.RetellWebClient) || (window.RetellClientJsSdk && window.RetellClientJsSdk.RetellWebClient);
             
-            sdk.on('error', (err) => {
-                console.error("SDK Error:", err);
-                statusText.innerText = "Помилка зв'язку.";
-                btn.disabled = false;
-            });
+            if (RetellClient) {
+                sdk = new RetellClient();
+                statusText.innerText = "Готово до тесту";
+                console.log("SDK успішно знайдено та активовано.");
+            } else {
+                statusText.innerText = "Помилка завантаження бібліотеки";
+                console.error("Не вдалося знайти клас RetellWebClient у глобальних об'єктах.");
+            }
+        } catch (e) {
+            console.error("Критична помилка ініціалізації:", e);
         }
-    };
+    }
+
+    // Запускаємо ініціалізацію з невеликою затримкою для впевненості
+    window.addEventListener('load', () => {
+        setTimeout(initRetell, 1000);
+    });
+
+    btn.addEventListener('click', async () => {
+        if (!sdk) {
+            alert("Бібліотека ще не завантажилася. Спробуйте через секунду.");
+            return;
+        }
+
+        // ВАШ АКТУАЛЬНИЙ ТОКЕН
+        const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzIyNGUwYjlkMWJmZjFhMjVkNmUwM2QyOWFmYSJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODkyNDAsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.TgmLa95_uSf87haN34E99WLFXGAedM0Uq1Kc9wWNz5g"; 
+
+        if (btn.innerText === "Завершити розмову") {
+            sdk.stopCall();
+            return;
+        }
+
+        try {
+            statusText.innerText = "З'єднуємо з Олександрою...";
+            btn.disabled = true;
+
+            await sdk.startCall({
+                accessToken: TEST_ACCESS_TOKEN,
+            });
+
+            btn.disabled = false;
+            btn.innerText = "Завершити розмову";
+            btn.style.backgroundColor = "#000";
+            statusText.innerText = "Розмова триває...";
+
+        } catch (error) {
+            console.error("Помилка дзвінка:", error);
+            statusText.innerText = "Помилка: перевірте токен або мікрофон";
+            btn.disabled = false;
+            btn.innerText = "Зателефонувати Олександрі";
+        }
+    });
+
+    // Налаштування подій, якщо SDK ініціалізовано
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            if (sdk) {
+                sdk.on('call_ended', () => {
+                    statusText.innerText = "Дзвінок завершено. Дякуємо!";
+                    btn.innerText = "Зателефонувати знову";
+                    btn.style.backgroundColor = "#E22718";
+                    btn.disabled = false;
+                });
+            }
+        }, 1500);
+    });
 </script>
 
 </body>
