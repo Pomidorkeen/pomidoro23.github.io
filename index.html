@@ -1,12 +1,76 @@
-!   <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARTA BONDA</title>
+    <title>MARTA BONDA | Shop Lenovo AI</title>
+    
+    <script src="https://unpkg.com/retell-client-js-sdk/dist/bundle.js"></script>
+    
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .call-btn {
+            background-color: #E22718; /* Фірмовий червоний Lenovo */
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(226, 39, 24, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .call-btn:hover {
+            background-color: #000;
+            transform: translateY(-2px);
+        }
+        .call-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        .logo {
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        .logo span { color: #E22718; }
+    </style>
 </head>
 <body>
-    <script type="text/javascript">
+
+<div class="container">
+    <div class="logo">SHOP <span>LENOVO</span></div>
+    <p>Менеджер Олександра готова допомогти вам із замовленням</p>
+    
+    <button id="call-button" class="call-btn">Зателефонувати Олександрі</button>
+    <div id="status">Статус: Готово до тесту</div>
+</div>
+
+<script type="text/javascript">
   window.helpcrunchSettings = {
     organization: 'shoplenovo',
     appId: '4231759b-b3d0-4136-820f-115a9c0217af',
@@ -16,5 +80,48 @@
 <script type="text/javascript">
   (function(w,d){var hS=w.helpcrunchSettings;if(!hS||!hS.organization){return;}var widgetSrc='https://embed.helpcrunch.com/sdk.js';w.HelpCrunch=function(){w.HelpCrunch.q.push(arguments)};w.HelpCrunch.q=[];function r(){if (d.querySelector('script[src="' + widgetSrc + '"')) { return; }var s=d.createElement('script');s.async=1;s.type='text/javascript';s.src=widgetSrc;(d.body||d.head).appendChild(s);}if(d.readyState === 'complete'||hS.loadImmediately){r();} else if(w.attachEvent){w.attachEvent('onload',r)}else{w.addEventListener('load',r,false)}})(window, document)
 </script>
+
+<script>
+    const sdk = new window.RetellClientJsSdk.RetellWebClient();
+    const btn = document.getElementById('call-button');
+    const statusText = document.getElementById('status');
+
+    btn.addEventListener('click', async () => {
+        // УВАГА: Для тесту вставте сюди свій access_token з кабінету Retell
+        // У Make.com / n8n ми пізніше зробимо автоматичне отримання цього токена
+        const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzU0N2NmMzQwYjJiYjJiYWU5MjQzZDg3YWNmMyJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODgyNDIsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.4S_JEL91Fu0pjFCt_tXX_Fv2tYtxx3MMljvREy3-H7k"; 
+
+        if (btn.innerText === "Завершити розмову") {
+            sdk.stopCall();
+            return;
+        }
+
+        try {
+            statusText.innerText = "З'єднуємо з Олександрою...";
+            btn.disabled = true;
+
+            await sdk.startCall({
+                accessToken: TEST_ACCESS_TOKEN,
+            });
+
+            btn.disabled = false;
+            btn.innerText = "Завершити розмову";
+            btn.style.backgroundColor = "#000";
+            statusText.innerText = "Розмова триває...";
+
+        } catch (error) {
+            console.error("Помилка дзвінка:", error);
+            statusText.innerText = "Помилка. Перевірте доступ до мікрофона або токен.";
+            btn.disabled = false;
+        }
+    });
+
+    sdk.on('call_ended', () => {
+        statusText.innerText = "Дзвінок завершено. Дякуємо!";
+        btn.innerText = "Зателефонувати знову";
+        btn.style.backgroundColor = "#E22718";
+    });
+</script>
+
 </body>
 </html>
