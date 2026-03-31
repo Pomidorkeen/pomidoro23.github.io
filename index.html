@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MARTA BONDA | Shop Lenovo AI</title>
+    <script src="https://cdn.jsdelivr.net/npm/retell-client-js-sdk/dist/bundle.js"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f8f9fa; margin: 0; }
         .container { text-align: center; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 400px; }
@@ -21,26 +22,40 @@
     <div class="logo">SHOP <span>LENOVO</span></div>
     <p>Менеджер Олександра готова допомогти вам із замовленням</p>
     <button id="call-button" class="call-btn">Зателефонувати Олександрі</button>
-    <div id="status">Завантаження асистента...</div>
+    <div id="status">Завантаження...</div>
 </div>
 
-<script type="text/javascript">
-  window.helpcrunchSettings = { organization: 'shoplenovo', appId: '4231759b-b3d0-4136-820f-115a9c0217af' };
-  (function(w,d){var hS=w.helpcrunchSettings;if(!hS||!hS.organization){return;}var widgetSrc='https://embed.helpcrunch.com/sdk.js';w.HelpCrunch=function(){w.HelpCrunch.q.push(arguments)};w.HelpCrunch.q=[];function r(){var s=d.createElement('script');s.async=1;s.type='text/javascript';s.src=widgetSrc;(d.body||d.head).appendChild(s);}if(d.readyState==='complete'||hS.loadImmediately){r();}else{w.addEventListener('load',r,false)}})(window, document);
-</script>
-
-<script type="module">
-    // Імпортуємо SDK як модуль — це вирішить проблему з "SDK not found"
-    import { RetellWebClient } from "https://unpkg.com/retell-client-js-sdk@latest/dist/bundle.js";
-
+<script>
+    let sdk;
     const btn = document.getElementById('call-button');
     const statusText = document.getElementById('status');
+    
+    // ВСТАВТЕ ВАШ НОВИЙ ТОКЕН СЮДИ
     const TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzIyNGUwYjlkMWJmZjFhMjVkNmUwM2QyOWFmYSJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODgyNDAsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.TgmLa95_uSf87haN34E99WLFXGAedM0Uq1Kc9wWNz5g";
 
-    const sdk = new RetellWebClient();
-    statusText.innerText = "Готово до дзвінка";
+    // Функція ініціалізації
+    function init() {
+        try {
+            // Перевіряємо, чи завантажилась бібліотека в глобальне вікно
+            const RetellClass = window.RetellWebClient || (window.Retell && window.Retell.RetellWebClient);
+            
+            if (RetellClass) {
+                sdk = new RetellClass();
+                statusText.innerText = "Готово до тесту";
+                console.log("SDK успішно активовано");
+            } else {
+                statusText.innerText = "Помилка завантаження бібліотеки";
+            }
+        } catch (e) {
+            console.error("Помилка:", e);
+        }
+    }
+
+    window.onload = () => setTimeout(init, 1000);
 
     btn.addEventListener('click', async () => {
+        if (!sdk) return alert("Зачекайте завантаження");
+
         if (btn.innerText === "Завершити розмову") {
             sdk.stopCall();
             return;
@@ -57,17 +72,10 @@
             btn.style.backgroundColor = "#000";
             statusText.innerText = "Олександра на зв'язку";
         } catch (error) {
-            console.error("Помилка:", error);
+            console.error(error);
             statusText.innerText = "Помилка (можливо, токен застарів)";
             btn.disabled = false;
         }
-    });
-
-    sdk.on('call_ended', () => {
-        statusText.innerText = "Дзвінок завершено";
-        btn.innerText = "Зателефонувати знову";
-        btn.style.backgroundColor = "#E22718";
-        btn.disabled = false;
     });
 </script>
 
