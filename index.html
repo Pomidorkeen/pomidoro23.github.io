@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MARTA BONDA | Shop Lenovo AI</title>
-    <script src="https://cdn.jsdelivr.net/npm/retell-client-js-sdk/dist/bundle.js"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f8f9fa; margin: 0; }
         .container { text-align: center; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 400px; }
@@ -20,63 +19,70 @@
 
 <div class="container">
     <div class="logo">SHOP <span>LENOVO</span></div>
-    <p>Менеджер Олександра готова допомогти вам із замовленням</p>
+    <p>Менеджер Олександра допоможе вам із замовленням</p>
     <button id="call-button" class="call-btn">Зателефонувати Олександрі</button>
-    <div id="status">Завантаження...</div>
+    <div id="status">Ініціалізація...</div>
 </div>
 
-<script>
-    let sdk;
+<script type="module">
+    import { RetellWebClient } from "https://esm.sh/retell-client-js-sdk@2.0.7";
+
     const btn = document.getElementById('call-button');
     const statusText = document.getElementById('status');
     
-    // ВСТАВТЕ ВАШ НОВИЙ ТОКЕН СЮДИ
+    // ВАШ НОВИЙ ТОКЕН
     const TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzIyNGUwYjlkMWJmZjFhMjVkNmUwM2QyOWFmYSJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODgyNDAsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.TgmLa95_uSf87haN34E99WLFXGAedM0Uq1Kc9wWNz5g";
 
-    // Функція ініціалізації
-    function init() {
-        try {
-            // Перевіряємо, чи завантажилась бібліотека в глобальне вікно
-            const RetellClass = window.RetellWebClient || (window.Retell && window.Retell.RetellWebClient);
-            
-            if (RetellClass) {
-                sdk = new RetellClass();
-                statusText.innerText = "Готово до тесту";
-                console.log("SDK успішно активовано");
-            } else {
-                statusText.innerText = "Помилка завантаження бібліотеки";
-            }
-        } catch (e) {
-            console.error("Помилка:", e);
-        }
+    let sdk;
+
+    try {
+        sdk = new RetellWebClient();
+        statusText.innerText = "Готово до дзвінка";
+        
+        sdk.on("call_started", () => {
+            statusText.innerText = "Олександра слухає...";
+            btn.innerText = "Завершити розмову";
+            btn.style.backgroundColor = "#000";
+            btn.disabled = false;
+        });
+
+        sdk.on("call_ended", () => {
+            statusText.innerText = "Дзвінок завершено";
+            btn.innerText = "Зателефонувати знову";
+            btn.style.backgroundColor = "#E22718";
+            btn.disabled = false;
+        });
+
+        sdk.on("error", (error) => {
+            console.error("SDK Error:", error);
+            statusText.innerText = "Помилка зв'язку";
+            btn.disabled = false;
+        });
+
+    } catch (e) {
+        statusText.innerText = "Помилка ініціалізації";
     }
 
-    window.onload = () => setTimeout(init, 1000);
-
     btn.addEventListener('click', async () => {
-        if (!sdk) return alert("Зачекайте завантаження");
-
         if (btn.innerText === "Завершити розмову") {
             sdk.stopCall();
             return;
         }
 
         try {
-            statusText.innerText = "З'єднуємо...";
             btn.disabled = true;
-
+            statusText.innerText = "З'єднуємо...";
             await sdk.startCall({ accessToken: TOKEN });
-
-            btn.disabled = false;
-            btn.innerText = "Завершити розмову";
-            btn.style.backgroundColor = "#000";
-            statusText.innerText = "Олександра на зв'язку";
         } catch (error) {
-            console.error(error);
-            statusText.innerText = "Помилка (можливо, токен застарів)";
+            statusText.innerText = "Токен застарів або немає доступу до мікрофона";
             btn.disabled = false;
         }
     });
+</script>
+
+<script type="text/javascript">
+  window.helpcrunchSettings = { organization: 'shoplenovo', appId: '4231759b-b3d0-4136-820f-115a9c0217af' };
+  (function(w,d){var hS=w.helpcrunchSettings;if(!hS||!hS.organization){return;}var widgetSrc='https://embed.helpcrunch.com/sdk.js';w.HelpCrunch=function(){w.HelpCrunch.q.push(arguments)};w.HelpCrunch.q=[];function r(){var s=d.createElement('script');s.async=1;s.type='text/javascript';s.src=widgetSrc;(d.body||d.head).appendChild(s);}if(d.readyState==='complete'||hS.loadImmediately){r();}else{w.addEventListener('load',r,false)}})(window, document);
 </script>
 
 </body>
