@@ -30,8 +30,8 @@
     const btn = document.getElementById('call-button');
     const statusText = document.getElementById('status');
     
-    // ВАШ НОВИЙ ТОКЕН
-    const TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzIyNGUwYjlkMWJmZjFhMjVkNmUwM2QyOWFmYSJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODgyNDAsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.TgmLa95_uSf87haN34E99WLFXGAedM0Uq1Kc9wWNz5g";
+    // ТВІЙ НОВИЙ ТОКЕН
+    const TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsX2JmMWE5YjgxYjg3Y2E3ZGRlMGZhZWRkZDk3ZCJ9LCJpc3MiOiJBUEl3UkNGdVBCYXdtMmgiLCJleHAiOjE3NzQ5ODk4OTUsIm5iZiI6MCwic3ViIjoiY2xpZW50In0.VSzirZhqeyH2zqveVd5wzVIf1MIg9zW2A-_wOXp5Czk";
 
     let sdk;
 
@@ -74,7 +74,7 @@
             statusText.innerText = "З'єднуємо...";
             await sdk.startCall({ accessToken: TOKEN });
         } catch (error) {
-            statusText.innerText = "Токен застарів або немає доступу до мікрофона";
+            statusText.innerText = "Помилка: перевірте мікрофон або токен";
             btn.disabled = false;
         }
     });
